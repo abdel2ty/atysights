@@ -1,0 +1,2 @@
+'use client';
+export default function E({ reset }: { reset: () => void }) { return (<main className="mx-auto max-w-6xl px-6 py-24"><h1 className="text-4xl md:text-6xl">Something went <span className="hl hl-blue">wrong.</span></h1><p className="mt-6 max-w-md text-lg text-mute">Please try again. If it keeps happening, email atysights@gmail.com.</p><button onClick={reset} className="btn mt-8">Try again</button></main>); }
