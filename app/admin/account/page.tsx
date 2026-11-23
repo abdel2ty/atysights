@@ -7,7 +7,7 @@ async function update(fd: FormData) {
   const email = String(fd.get('email') ?? '').trim(), pw = String(fd.get('password') ?? '');
   if (!email && !pw) redirect('/admin/account?e=Enter+a+new+email+or+a+new+password');
   if (pw && pw.length < 8) redirect('/admin/account?e=Password+must+be+at+least+8+characters');
-  const { error } = await s.auth.updateUser({ ...(email && { email }), ...(pw && { password: pw }) });
+  const { error } = await s.auth.updateUser({ ...(email ? { email } : {}), ...(pw ? { password: pw } : {}) });
   redirect(error ? `/admin/account?e=${encodeURIComponent(error.message)}` : '/admin/account?ok=1');
 }
 export default async function Acc({ searchParams }: { searchParams: Promise<{ e?: string; ok?: string }> }) {
