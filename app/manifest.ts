@@ -1,9 +1,6 @@
 import type { MetadataRoute } from 'next';
-import { existsSync } from 'fs';
-import path from 'path';
+import { LOGO } from '@/lib/site';
+const types: Record<string, string> = { png: 'image/png', svg: 'image/svg+xml', webp: 'image/webp', jpg: 'image/jpeg' };
 export default function manifest(): MetadataRoute.Manifest {
-  const f = ['png', 'svg', 'webp', 'jpg'].map(e => `logo.${e}`).find(x => existsSync(path.join(process.cwd(), 'public', x)));
-  const types: Record<string, string> = { png: 'image/png', svg: 'image/svg+xml', webp: 'image/webp', jpg: 'image/jpeg' };
-  const type = f ? types[f.split('.')[1]] : undefined;
-  return { name: 'Atysights', short_name: 'Atysights', start_url: '/', display: 'standalone', background_color: '#ffffff', theme_color: '#0B5FFF', ...(f ? { icons: [{ src: `/${f}`, sizes: 'any', type }] } : {}) };
+  return { name: 'Atysights', short_name: 'Atysights', start_url: '/', display: 'standalone', background_color: '#ffffff', theme_color: '#0B5FFF', icons: [{ src: LOGO, sizes: 'any', type: types[LOGO.split('.').pop() ?? ''] }] };
 }

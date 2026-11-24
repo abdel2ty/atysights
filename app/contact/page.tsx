@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { LINKEDIN } from '@/lib/site';
 import { sb } from '@/lib/supabase/server';
 export const metadata = { title: 'Contact' };
 const schema = z.object({ name: z.string().trim().min(1).max(120), company: z.string().trim().max(160), email: z.string().trim().email().max(200), industry: z.string().trim().max(120), need: z.string().trim().min(5).max(2000), details: z.string().trim().max(4000) });
@@ -16,7 +17,7 @@ export default async function C({ searchParams }: { searchParams: Promise<{ sent
   const { sent, e } = await searchParams;
   const F = (n: string, l: string, t = 'text', req = false) => <div><label className="mb-1 block text-sm font-medium">{l}</label><input name={n} type={t} required={req} className="field"/></div>;
   return (<main className="mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-12"><div className="md:col-span-5"><h1 className="font-serif text-5xl">Tell us what you need to understand.</h1>
-    <p className="mt-6 text-mute">Describe the question behind your numbers. We reply by email.</p><p className="mt-6">Or write directly: <a className="underline" href="mailto:atysights@gmail.com">atysights@gmail.com</a></p></div>
+    <p className="mt-6 text-mute">Describe the question behind your numbers. We reply by email.</p><p className="mt-6">Or write directly: <a className="underline" href="mailto:atysights@gmail.com">atysights@gmail.com</a></p><p className="mt-3">Or connect on <a className="underline" href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p></div>
     <div className="md:col-span-7">{sent ? <p className="border border-ink bg-blue text-white p-5 font-medium">Thank you. Your message was sent and we will reply by email.</p> :
       <form action={send} className="space-y-4">{F('name','Name','text',true)}{F('company','Business or company')}{F('email','Email','email',true)}{F('industry','Industry')}
         <div><label className="mb-1 block text-sm font-medium">What do you need help understanding?</label><textarea name="need" required minLength={5} rows={3} className="field"/></div>

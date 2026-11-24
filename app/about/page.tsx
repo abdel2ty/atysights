@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LINKEDIN } from '@/lib/site';
 export const metadata = { title: 'About' };
 export default function A() {
   return (<main className="mx-auto max-w-6xl px-6 py-16"><h1 className="max-w-3xl font-serif text-5xl leading-tight">We don’t only show what happened. We explain why.</h1>
@@ -8,5 +9,5 @@ export default function A() {
       <p>We work from your real data and report only what it shows. We do not promise results, and we do not guess where the evidence is thin.</p></div>
     <aside className="border-t border-ink pt-4 md:col-span-5"><h2 className="font-serif text-2xl">How we approach a business</h2>
       <ol className="mt-4 space-y-3 text-mute"><li><b className="text-ink">Understand.</b> Your model, goals and data.</li><li><b className="text-ink">Investigate.</b> Patterns and weak points.</li><li><b className="text-ink">Reveal.</b> Findings in plain language.</li><li><b className="text-ink">Advise.</b> Clear next steps.</li></ol></aside></div>
-    <Link href="/contact" className="btn mt-12">Let’s talk</Link></main>);
+    <div className="mt-12 flex flex-wrap gap-3"><Link href="/contact" className="btn">Let’s talk</Link><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="btn-o">Connect on LinkedIn</a></div></main>);
 }
