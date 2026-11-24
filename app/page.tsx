@@ -5,7 +5,6 @@ import Reveal from '@/components/Reveal';
 import Lens from '@/components/Lens';
 import Ledger from '@/components/Ledger';
 import MiniDash from '@/components/MiniDash';
-import Clock from '@/components/Clock';
 import { LINKEDIN } from '@/lib/site';
 import { services } from '@/lib/content';
 export const revalidate = 60;
@@ -20,7 +19,7 @@ export default async function Home() {
         <p className="mt-8 max-w-md text-lg text-mute">ATYSIGHTS turns business data into insight, so owners can see how the business performs, where it leaks and what to examine next.</p>
         <div className="mt-8 flex flex-wrap gap-3"><Link href="/projects" className="btn">Explore our work</Link><Link href="/contact" className="btn-o">Let’s talk</Link></div></div>
       <div className="relative md:col-span-5 md:pb-24"><Ledger/><div className="mt-6 md:absolute md:-left-12 md:bottom-0 md:mt-0 md:w-72"><MiniDash/></div></div></div></section>
-    <div className="bg-blue text-white"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5"><p className="font-semibold">Independent business intelligence for owners in Egypt and worldwide.<Clock/></p><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="border-2 border-white px-5 py-2 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></div>
+    <div className="bg-blue text-white"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5"><p className="font-semibold">Independent business intelligence for owners in Egypt and worldwide.</p><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="border-2 border-white px-5 py-2 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></div>
     <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:py-24 md:grid-cols-12"><Reveal className="md:col-span-5"><h2 className="text-4xl md:text-5xl">Revenue is up. <span className="hl hl-blue">Look closer.</span></h2><p className="mt-6 text-lg text-mute">A total can look fine while parts of the business quietly lose money. Press the button to see what a breakdown shows.</p></Reveal><Reveal d={.15} className="md:col-span-7"><Lens/></Reveal></section>
     <section className="bg-ink py-16 md:py-24 text-white"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-2xl text-4xl md:text-5xl">Sound familiar? <span className="hl hl-blue">Totals hide it.</span></h2></Reveal>
       <ul className="mt-12 border-t border-white/20">{problems.map((p,i)=><Reveal key={p} d={i*.06}><li className="group flex items-center gap-6 border-b border-white/20 py-5 text-xl font-semibold transition-colors hover:bg-blue md:text-3xl"><span className="w-10 text-base text-white/40 group-hover:text-white">{i+1}</span>{p}</li></Reveal>)}</ul></div></section>
