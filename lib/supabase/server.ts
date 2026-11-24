@@ -9,10 +9,10 @@ export async function sb() {
 }
 export async function requireAdmin() {
   const s = await sb();
-  const { data: { user } } = await s.auth.getUser();
+  const [{ data: { user } }, rpc] = await Promise.all([s.auth.getUser(), s.rpc('is_admin')]);
   if (!user) redirect('/admin/login');
-  let ok = (await s.rpc('is_admin')).data === true;
-  if (!ok) ok = !!(await s.from('admins').select('user_id').eq('user_id', user.id).maybeSingle()).data;
+  let ok = rpc.data === true;
+  if (!ok && rpc.error) ok = !!(await s.from('admins').select('user_id').eq('user_id', user.id).maybeSingle()).data;
   if (!ok) redirect('/admin/login?e=noadmin');
   return s;
 }

@@ -4,9 +4,7 @@ export const dynamic = 'force-dynamic';
 export default async function Overview() {
   const s = await requireAdmin();
   const count = async (t: string, col?: string, val?: string) => { let q = s.from(t).select('*', { count: 'exact', head: true }); if (col) q = q.eq(col, val!); return (await q).count ?? 0; };
-  const [total, pub, msgs, clients] = await Promise.all([count('projects'), count('projects', 'status', 'published'), count('inquiries'), count('clients')]);
-  const { data: recent } = await s.from('inquiries').select('id,name,company,need,created_at').order('created_at', { ascending: false }).limit(4);
-  const { data: projs } = await s.from('projects').select('id,title,status,cover_image_url').order('updated_at', { ascending: false }).limit(4);
+  const [total, pub, msgs, clients, { data: recent }, { data: projs }] = await Promise.all([count('projects'), count('projects', 'status', 'published'), count('inquiries'), count('clients'), s.from('inquiries').select('id,name,company,need,created_at').order('created_at', { ascending: false }).limit(4), s.from('projects').select('id,title,status,cover_image_url').order('updated_at', { ascending: false }).limit(4)]);
   const stats: [string, number][] = [['Published projects', pub], ['Drafts', total - pub], ['Messages', msgs], ['Clients', clients]];
   return (<div className="mx-auto max-w-5xl"><div className="flex flex-wrap items-end justify-between gap-4"><div><h1 className="text-3xl md:text-4xl">Overview</h1><p className="mt-1 text-sm text-mute">Everything on your site, in one place.</p></div>
     <div className="flex flex-wrap gap-3"><Link href="/admin/edit/new" className="btn">New project</Link><Link href="/admin/clients" className="btn-o">Add client</Link></div></div>
