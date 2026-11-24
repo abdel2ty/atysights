@@ -40,3 +40,6 @@ body{overscroll-behavior-y:none}
 .graph{background-color:#FCFCF8;background-image:linear-gradient(rgba(11,95,255,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(11,95,255,.11) 1px,transparent 1px);background-size:24px 24px}
 ::selection{background:#0B5FFF;color:#fff}
 h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}
+html,body{overflow-x:clip;max-width:100%}
+img,svg,video{max-width:100%}
+@keyframes pagein-m{from{opacity:0;transform:translateY(12px)}}
