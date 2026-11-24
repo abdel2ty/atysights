@@ -43,3 +43,5 @@ h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}
 html,body{overflow-x:clip;max-width:100%}
 img,svg,video{max-width:100%}
 @keyframes pagein-m{from{opacity:0;transform:translateY(12px)}}
+.fade-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.mq:hover .marquee{animation-play-state:paused}

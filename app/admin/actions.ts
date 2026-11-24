@@ -20,7 +20,7 @@ export async function save(fd: FormData) {
   const id = String(fd.get('id'));
   const { error } = id === 'new' ? await s.from('projects').insert(row) : await s.from('projects').update(row).eq('id', id);
   if (error) redirect(`/admin/edit/${id}?err=${encodeURIComponent(error.message.includes('slug') ? 'That slug is already used' : error.message)}`);
-  revalidatePath('/', 'layout'); revalidateTag('projects'); redirect('/admin');
+  revalidatePath('/', 'layout'); revalidateTag('projects'); redirect('/admin/projects');
 }
 export async function toggle(fd: FormData) {
   const s = await requireAdmin(); const f = String(fd.get('field')) === 'featured' ? 'featured' : 'status';
@@ -29,3 +29,19 @@ export async function toggle(fd: FormData) {
 }
 export async function remove(fd: FormData) { const s = await requireAdmin(); await s.from('projects').delete().eq('id', String(fd.get('id'))); revalidatePath('/', 'layout'); revalidateTag('projects'); }
 export async function signOut() { const s = await requireAdmin(); await s.auth.signOut(); redirect('/admin/login'); }
+export async function addClient(fd: FormData) {
+  const s = await requireAdmin();
+  const name = String(fd.get('name') ?? '').trim(), logo = String(fd.get('logo_url') ?? '').trim(), site = String(fd.get('website_url') ?? '').trim();
+  if (!name || !/^https:\/\//.test(logo)) redirect('/admin/clients?err=' + encodeURIComponent('Name and an https logo link are required'));
+  if (site && !/^https:\/\//.test(site)) redirect('/admin/clients?err=' + encodeURIComponent('Website must start with https://'));
+  const { error } = await s.from('clients').insert({ name, logo_url: logo, website_url: site || null, sort_order: Number(fd.get('sort_order') || 0) });
+  if (error) redirect('/admin/clients?err=' + encodeURIComponent(error.message));
+  revalidatePath('/', 'layout'); revalidateTag('clients'); redirect('/admin/clients');
+}
+export async function toggleClient(fd: FormData) {
+  const s = await requireAdmin(); await s.from('clients').update({ visible: String(fd.get('cur')) !== 'true' }).eq('id', String(fd.get('id')));
+  revalidatePath('/', 'layout'); revalidateTag('clients');
+}
+export async function removeClient(fd: FormData) {
+  const s = await requireAdmin(); await s.from('clients').delete().eq('id', String(fd.get('id'))); revalidatePath('/', 'layout'); revalidateTag('clients');
+}

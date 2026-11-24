@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { getPublished } from '@/lib/supabase/public';
+import { getPublished, getClients } from '@/lib/supabase/public';
 import Reveal from '@/components/Reveal';
 import Lens from '@/components/Lens';
 import Ledger from '@/components/Ledger';
+import ClientsMarquee from '@/components/ClientsMarquee';
 import MiniDash from '@/components/MiniDash';
 import { LINKEDIN } from '@/lib/site';
 import { services } from '@/lib/content';
@@ -11,7 +12,7 @@ export const revalidate = 60;
 const steps = [['Understand','We learn how the business makes money, what it wants to achieve and what data exists.'],['Investigate','We look for patterns, leaks and weak spots in how it actually performs.'],['Reveal','We turn findings into something an owner can read without a data background.'],['Advise','We recommend what to change, stop or watch next, with the evidence behind it.']];
 const problems = ['Revenue grows, but profit stays flat.','Best-sellers that earn almost nothing.','A branch that keeps falling short.','Customer acquisition costs rising each quarter.','Operating costs growing unnoticed.','Decisions made on assumptions, not evidence.'];
 export default async function Home() {
-  const work = (await getPublished()).slice(0, 3);
+  const [all, clients] = await Promise.all([getPublished(), getClients()]); const work = all.slice(0, 3);
   return (<main className="overflow-x-clip">
     <section className="bg-white text-ink"><div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-12 md:gap-14 md:pb-32 md:pt-20">
       <div className="md:col-span-7"><h1 className="text-5xl leading-[1.12] md:text-7xl">Your business is telling a story.<br/>
@@ -20,6 +21,7 @@ export default async function Home() {
         <div className="mt-8 flex flex-wrap gap-3"><Link href="/projects" className="btn">Explore our work</Link><Link href="/contact" className="btn-o">Let’s talk</Link></div></div>
       <div className="relative md:col-span-5 md:pb-24"><Ledger/><div className="mt-6 md:absolute md:-left-12 md:bottom-0 md:mt-0 md:w-72"><MiniDash/></div></div></div></section>
     <div className="bg-blue text-white"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5"><p className="font-semibold">Independent business intelligence for owners in Egypt and worldwide.</p><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="border-2 border-white px-5 py-2 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></div>
+    <ClientsMarquee clients={clients}/>
     <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:py-24 md:grid-cols-12"><Reveal className="md:col-span-5"><h2 className="text-4xl md:text-5xl">Revenue is up. <span className="hl hl-blue">Look closer.</span></h2><p className="mt-6 text-lg text-mute">A total can look fine while parts of the business quietly lose money. Press the button to see what a breakdown shows.</p></Reveal><Reveal d={.15} className="md:col-span-7"><Lens/></Reveal></section>
     <section className="bg-ink py-16 md:py-24 text-white"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-2xl text-4xl md:text-5xl">Sound familiar? <span className="hl hl-blue">Totals hide it.</span></h2></Reveal>
       <ul className="mt-12 border-t border-white/20">{problems.map((p,i)=><Reveal key={p} d={i*.06}><li className="group flex items-center gap-6 border-b border-white/20 py-5 text-xl font-semibold transition-colors hover:bg-blue md:text-3xl"><span className="w-10 text-base text-white/40 group-hover:text-white">{i+1}</span>{p}</li></Reveal>)}</ul></div></section>

@@ -7,7 +7,7 @@ export default async function E({ params, searchParams }: { params: Promise<{ id
   const { id } = await params; const { err } = await searchParams; const s = await requireAdmin();
   const p: any = id === 'new' ? {} : (await s.from('projects').select('*').eq('id', id).single()).data ?? {};
   const T = (n: string, l: string, extra = '') => <div className={extra}><label className="mb-1 block text-sm font-medium">{l}</label><input name={n} defaultValue={p[n] ?? ''} className="field"/></div>;
-  return (<main className="mx-auto max-w-3xl px-6 py-12"><Link href="/admin" className="text-sm underline">Back to projects</Link>
+  return (<main className="mx-auto max-w-3xl px-6 py-12"><Link href="/admin/projects" className="text-sm underline">Back to projects</Link>
     <h1 className="mt-4 font-serif text-4xl">{id === 'new' ? 'Add project' : 'Edit project'}</h1>
     {err && <p className="mt-4 border border-red-700 p-3 text-sm text-red-700">{err}</p>}
     <form action={save} className="mt-8 space-y-5"><input type="hidden" name="id" value={id}/>
