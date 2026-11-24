@@ -45,3 +45,4 @@ img,svg,video{max-width:100%}
 @keyframes pagein-m{from{opacity:0;transform:translateY(12px)}}
 .fade-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .mq:hover .marquee{animation-play-state:paused}
+.adm .btn{background:#0A0A0A}.adm .btn:hover{background:#0B5FFF}.adm .field:focus{border-color:#0A0A0A;outline:none}

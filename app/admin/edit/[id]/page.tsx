@@ -3,7 +3,7 @@ import { requireAdmin } from '@/lib/supabase/server';
 import ImageField from '@/components/ImageField';
 import { save } from '../../actions';
 const areas: [string, string, string][] = [['business_context','Business context','Who the client is and what the business does.'],['problem_statement','Problem statement','What was going wrong or unclear.'],['objectives','Objectives','What the analysis set out to answer.'],['methodology','Analytical methodology','The data used and how it was analysed.'],['key_findings','Key findings','What the data revealed.'],['business_insights','Business insights','What the findings mean for the business.'],['recommendations','Recommendations','What to do next.'],['conclusion','Conclusion','']];
-function Card({ t, d, children }: { t: string; d?: string; children: React.ReactNode }) { return (<section className="bg-white p-5 shadow-sm md:p-6"><h2 className="text-lg">{t}</h2>{d && <p className="mt-1 text-sm text-mute">{d}</p>}<div className="mt-5 space-y-4">{children}</div></section>); }
+function Card({ t, d, children }: { t: string; d?: string; children: React.ReactNode }) { return (<section className="bg-white p-5 border border-rule md:p-6"><h2 className="text-lg">{t}</h2>{d && <p className="mt-1 text-sm text-mute">{d}</p>}<div className="mt-5 space-y-4">{children}</div></section>); }
 export default async function E({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ err?: string }> }) {
   const { id } = await params; const { err } = await searchParams; const s = await requireAdmin();
   const p: any = id === 'new' ? {} : (await s.from('projects').select('*').eq('id', id).single()).data ?? {};
