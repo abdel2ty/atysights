@@ -46,3 +46,6 @@ img,svg,video{max-width:100%}
 .fade-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .mq:hover .marquee{animation-play-state:paused}
 .adm .btn{background:#0A0A0A}.adm .btn:hover{background:#0B5FFF}.adm .field:focus{border-color:#0A0A0A;outline:none}
+.sweep{position:fixed;inset:0;z-index:60;background:#0B5FFF;transform-origin:right;pointer-events:none;animation:sweepout .5s cubic-bezier(.7,0,.2,1) both}
+@keyframes sweepout{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+@media (prefers-reduced-motion:reduce){.sweep{display:none}}
