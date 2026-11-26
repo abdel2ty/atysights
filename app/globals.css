@@ -46,13 +46,3 @@ img,svg,video{max-width:100%}
 .fade-x{-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .mq:hover .marquee{animation-play-state:paused}
 .adm .btn{background:#0A0A0A}.adm .btn:hover{background:#0B5FFF}.adm .field:focus{border-color:#0A0A0A;outline:none}
-.fade-in{animation:fin .9s cubic-bezier(.16,1,.3,1) both;animation-delay:var(--d,0s)}
-@keyframes fin{from{opacity:0;transform:translateY(18px)}}
-.parallax{transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .3s ease-out}
-@media (max-width:767px){.parallax{transform:none}}
-.nl{background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat;transition:background-size .3s cubic-bezier(.7,0,.2,1),color .2s;padding-bottom:2px}.nl:hover{background-size:100% 2px}
-.reveal{transform:translateY(36px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);transition-delay:var(--d,0s)}
-.reveal.in{transform:none}
-.reveal .imgwrap{clip-path:inset(0 0 100% 0);transition:clip-path 1s cubic-bezier(.7,0,.2,1) .15s}.reveal.in .imgwrap{clip-path:inset(0)}
-.btn{position:relative;overflow:hidden;isolation:isolate}.btn::before{content:'';position:absolute;inset:0;background:#0A0A0A;transform:translateX(-101%);transition:transform .4s cubic-bezier(.7,0,.2,1);z-index:-1}.btn:hover{background:#0B5FFF}.btn:hover::before{transform:none}
-.adm .btn::before{background:#0B5FFF}.adm .btn:hover{background:#0A0A0A}
