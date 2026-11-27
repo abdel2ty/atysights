@@ -1,16 +1,19 @@
 import Link from 'next/link';
+import WorkCard from '@/components/WorkCard';
 import { getPublished } from '@/lib/supabase/public';
+import { KINDS } from '@/lib/content';
 export const revalidate = 60;
-export default async function P({ searchParams }: { searchParams: Promise<{ f?: string }> }) {
-  const { f } = await searchParams;
-  const data = await getPublished();
-  const tags = [...new Set((data ?? []).flatMap(p=>[p.industry,p.category]).filter(Boolean))] as string[];
-  const list = (data ?? []).filter(p => !f || p.industry===f || p.category===f);
-  return (<main className="mx-auto max-w-6xl px-6 py-16"><h1 className="font-serif text-5xl">Work</h1>
-    <div className="mt-8 flex flex-wrap gap-2 text-sm"><Link href="/projects" className={`border px-3 py-1 ${!f?'bg-blue text-white border-lime':'border-rule'}`}>All</Link>
-      {tags.map(t=><Link key={t} href={`/projects?f=${encodeURIComponent(t)}`} className={`border px-3 py-1 ${f===t?'bg-blue text-white border-lime':'border-rule'}`}>{t}</Link>)}</div>
-    <ul className="mt-10 border-t border-ink">{list.map(p=><li key={p.id} className="border-b border-rule"><Link href={`/projects/${p.slug}`} className="grid gap-2 py-6 hover:bg-white/40 md:grid-cols-12">
-      <span className="text-sm text-mute md:col-span-2">{p.published_at}</span><h2 className="font-serif text-2xl md:col-span-5">{p.title}{p.featured && <span className="ml-2 bg-blue text-white px-2 text-xs">Featured</span>}</h2>
-      <p className="text-sm text-mute md:col-span-5">{p.industry}{p.category && `, ${p.category}`}. {p.short_description}</p></Link></li>)}</ul>
-    {!list.length && <p className="mt-10 text-mute">No projects match this filter.</p>}</main>);
+export const metadata = { title: 'Work' };
+export default async function P({ searchParams }: { searchParams: Promise<{ k?: string; f?: string }> }) {
+  const { k, f } = await searchParams; const all = await getPublished();
+  const inKind = all.filter((p: any) => !k || p.kind === k);
+  const tags = [...new Set(inKind.map((p: any) => p.industry).filter(Boolean))] as string[];
+  const list = inKind.filter((p: any) => !f || p.industry === f);
+  const q = (kk?: string, ff?: string) => { const s = new URLSearchParams(); if (kk) s.set('k', kk); if (ff) s.set('f', ff); const t = s.toString(); return t ? `/projects?${t}` : '/projects'; };
+  const chip = (on: boolean) => `border px-3 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-ink bg-ink text-white' : 'border-rule hover:border-ink'}`;
+  return (<main className="mx-auto max-w-6xl px-6 py-12 md:py-16"><h1 className="text-4xl md:text-6xl">Work</h1><p className="mt-4 max-w-xl text-lg text-mute">Systems, data projects and AI. Where a project is live, you can open it.</p>
+    <div className="mt-8 flex flex-wrap gap-2"><Link href={q()} className={chip(!k)}>All</Link>{Object.entries(KINDS).map(([key, l]) => <Link key={key} href={q(key)} className={chip(k === key)}>{l}</Link>)}</div>
+    {tags.length > 1 && <div className="mt-3 flex flex-wrap gap-2 text-sm">{tags.map(t => <Link key={t} href={q(k, f === t ? undefined : t)} className={`px-3 py-1 ${f === t ? 'bg-blue text-white' : 'bg-blue/10 text-blue'}`}>{t}</Link>)}</div>}
+    <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">{list.map((p: any) => <WorkCard key={p.id} p={p} />)}</div>
+    {!list.length && <p className="mt-10 text-mute">No projects here yet.</p>}</main>);
 }

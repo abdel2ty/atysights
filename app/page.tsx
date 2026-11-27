@@ -1,39 +1,40 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { getPublished, getClients } from '@/lib/supabase/public';
 import Reveal from '@/components/Reveal';
-import Lens from '@/components/Lens';
-import Ledger from '@/components/Ledger';
+import SystemMap from '@/components/SystemMap';
+import RagDemo from '@/components/RagDemo';
+import WorkCard from '@/components/WorkCard';
 import ClientsMarquee from '@/components/ClientsMarquee';
-import MiniDash from '@/components/MiniDash';
+import { getPublished, getClients } from '@/lib/supabase/public';
 import { LINKEDIN } from '@/lib/site';
-import { services } from '@/lib/content';
 export const revalidate = 60;
-const steps = [['Understand','We learn how the business makes money, what it wants to achieve and what data exists.'],['Investigate','We look for patterns, leaks and weak spots in how it actually performs.'],['Reveal','We turn findings into something an owner can read without a data background.'],['Advise','We recommend what to change, stop or watch next, with the evidence behind it.']];
-const problems = ['Revenue grows, but profit stays flat.','Best-sellers that earn almost nothing.','A branch that keeps falling short.','Customer acquisition costs rising each quarter.','Operating costs growing unnoticed.','Decisions made on assumptions, not evidence.'];
+const pillars = [['Business systems', 'Point of sale, inventory, ordering and back-office systems built around how your shop actually runs.', 'system'], ['Data analysis', 'Dashboards, reports and forecasts that show what is happening and what is likely to happen next.', 'analytics'], ['AI systems', 'Assistants that answer from your own data, and automation that does the repetitive work.', 'ai']];
+const principles = [['Data first.', 'An AI answer is only as reliable as the data under it. The foundation is cleaned and modelled before anything is asked of it.'], ['Answers with sources.', 'Each answer points to the record it came from. If the data does not contain the answer, the assistant says so.'], ['Predictions you can check.', 'Forecasts come with the method and the margin of error, not just a number.']];
+const steps = [['Understand', 'How the business runs, what slows it down and what data already exists.'], ['Build', 'The system or the data model, in small steps you can see and test.'], ['Connect', 'Analysis, forecasts and AI on top of the same clean data.'], ['Support', 'Launch, training and improvements after the first version is live.']];
 export default async function Home() {
   const [all, clients] = await Promise.all([getPublished(), getClients()]); const work = all.slice(0, 3);
   return (<main className="overflow-x-clip">
-    <section className="bg-white text-ink"><div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-12 md:gap-14 md:pb-32 md:pt-20">
-      <div className="md:col-span-7"><h1 className="text-5xl leading-[1.12] md:text-7xl">Your business is telling a story.<br/>
-        <span className="hl hl-line mt-3" style={{['--d' as any]:'.3s'}}>Are you</span><br/><span className="hl hl-blue mt-3" style={{['--d' as any]:'.7s'}}>reading it?</span></h1>
-        <p className="mt-8 max-w-md text-lg text-mute">ATYSIGHTS turns business data into insight, so owners can see how the business performs, where it leaks and what to examine next.</p>
-        <div className="mt-8 flex flex-wrap gap-3"><Link href="/projects" className="btn">Explore our work</Link><Link href="/contact" className="btn-o">Let’s talk</Link></div></div>
-      <div className="relative md:col-span-5 md:pb-24"><Ledger/><div className="mt-6 md:absolute md:-left-12 md:bottom-0 md:mt-0 md:w-72"><MiniDash/></div></div></div></section>
-    <div className="bg-blue text-white"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5"><p className="font-semibold">Independent business intelligence for owners in Egypt and worldwide.</p><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="border-2 border-white px-5 py-2 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></div>
-    <ClientsMarquee clients={clients}/>
-    <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:py-24 md:grid-cols-12"><Reveal className="md:col-span-5"><h2 className="text-4xl md:text-5xl">Revenue is up. <span className="hl hl-blue">Look closer.</span></h2><p className="mt-6 text-lg text-mute">A total can look fine while parts of the business quietly lose money. Press the button to see what a breakdown shows.</p></Reveal><Reveal d={.15} className="md:col-span-7"><Lens/></Reveal></section>
-    <section className="bg-ink py-16 md:py-24 text-white"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-2xl text-4xl md:text-5xl">Sound familiar? <span className="hl hl-blue">Totals hide it.</span></h2></Reveal>
-      <ul className="mt-12 border-t border-white/20">{problems.map((p,i)=><Reveal key={p} d={i*.06}><li className="group flex items-center gap-6 border-b border-white/20 py-5 text-xl font-semibold transition-colors hover:bg-blue md:text-3xl"><span className="w-10 text-base text-white/40 group-hover:text-white">{i+1}</span>{p}</li></Reveal>)}</ul></div></section>
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-24"><Reveal><h2 className="text-4xl md:text-5xl">What we do</h2></Reveal><ul className="mt-10 border-t-2 border-ink">{services.map(([t,d,v],i)=><Reveal key={t} d={i*.05}><li className="group grid gap-3 border-b border-rule px-2 py-6 transition-colors hover:bg-blue hover:text-white md:grid-cols-12"><h3 className="text-2xl md:col-span-4">{t}</h3><p className="md:col-span-5">{d}</p><p className="text-sm text-mute group-hover:text-white md:col-span-3">{v}</p></li></Reveal>)}</ul></section>
-    <section className="mx-auto max-w-6xl px-6 py-16 md:py-24"><Reveal><h2 className="text-4xl md:text-5xl">How we work</h2></Reveal>
-      <ol className="mt-12 grid gap-6 md:grid-cols-4">{steps.map(([t,d],i)=><Reveal key={t} d={i*.1}><li className="h-full border-2 border-ink p-6 transition-colors hover:border-blue"><span className="grid h-12 w-12 place-items-center bg-blue text-xl font-extrabold text-white">{i+1}</span><h3 className="mt-5 text-xl">{t}</h3><p className="mt-2 text-sm text-mute">{d}</p></li></Reveal>)}</ol></section>
-    <section className="mx-auto max-w-6xl px-6 pb-24"><Reveal><h2 className="text-4xl md:text-5xl">Selected <span className="hl hl-blue">work</span></h2></Reveal>
-      {!work?.length && <p className="mt-8 text-mute">Projects will appear here once published.</p>}
-      <div className="mt-12 grid gap-8 md:grid-cols-3">{work?.map((p,i)=><Reveal key={p.id} d={i*.1}><Link href={`/projects/${p.slug}`} className="group block">
-        <div className="relative mb-4 aspect-[4/3] overflow-hidden bg-ink">{p.cover_image_url && <Image src={p.cover_image_url} alt="" fill sizes="33vw" className="object-cover transition-transform duration-700 group-hover:scale-105"/>}</div>
-        <p className="text-sm font-semibold text-blue">{p.industry}</p><h3 className="text-2xl group-hover:underline">{p.title}</h3><p className="mt-2 text-sm text-mute">{p.short_description}</p></Link></Reveal>)}</div></section>
-    <section className="bg-blue py-16 md:py-24 text-white"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-3xl text-4xl md:text-6xl">Better decisions start with <span className="hl bg-ink">better understanding.</span></h2>
-      <div className="mt-10 flex flex-wrap gap-3"><Link href="/contact" className="inline-block bg-white px-6 py-3 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5">Discuss your business</Link><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="inline-block border-2 border-white px-6 py-3 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></Reveal></div></section>
+    <section className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-12 md:gap-14 md:pb-28 md:pt-16">
+      <div className="md:col-span-6"><h1 className="text-[2.4rem] leading-[1.12] sm:text-5xl md:text-6xl md:leading-[1.1]">Business systems,<br />
+        <span className="hl hl-line mt-3" style={{ ['--d' as any]: '.3s' }}>data analysis,</span><br /><span className="hl hl-blue mt-3" style={{ ['--d' as any]: '.7s' }}>and AI that reads both.</span></h1>
+        <p className="mt-8 max-w-md text-lg text-mute">ATYSIGHTS builds the software that runs a business, the analysis that explains it, and the AI that answers from its own data. You work directly with the person who builds it.</p>
+        <div className="mt-8 flex flex-wrap gap-3"><Link href="/projects" className="btn">See live work</Link><Link href="/contact" className="btn-o">Let’s talk</Link></div></div>
+      <div className="md:col-span-6"><SystemMap /></div>
+    </section>
+    <div className="bg-blue text-white"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5"><p className="font-semibold">Independent studio for owners in Egypt and worldwide.</p><a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="border-2 border-white px-5 py-2 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></div>
+    <ClientsMarquee clients={clients} />
+    <section className="bg-ink py-16 text-white md:py-24"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-2xl text-4xl md:text-5xl">Three things, <span className="hl hl-blue">one standard.</span></h2></Reveal>
+      <ul className="mt-12 border-t border-white/20">{pillars.map(([t, d, k], i) => <Reveal key={t} d={i * .08}><li><Link href={`/projects?k=${k}`} className="group grid items-baseline gap-3 border-b border-white/20 py-7 transition-all duration-300 hover:bg-blue hover:pl-4 md:grid-cols-12"><span className="text-white/40 group-hover:text-white md:col-span-1">0{i + 1}</span><span className="text-2xl font-extrabold md:col-span-4 md:text-3xl">{t}</span><span className="text-white/70 group-hover:text-white md:col-span-7">{d}</span></Link></li></Reveal>)}</ul></div></section>
+    <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-12 md:gap-14 md:py-28">
+      <div className="md:col-span-5"><Reveal><h2 className="text-4xl md:text-5xl">Analysis and AI, <span className="hl hl-blue">built together.</span></h2>
+        <ul className="mt-10 space-y-7">{principles.map(([t, d]) => <li key={t} className="border-l-4 border-blue pl-4"><b className="block text-lg">{t}</b><span className="text-mute">{d}</span></li>)}</ul></Reveal></div>
+      <div className="md:col-span-7"><Reveal d={.12}><RagDemo /></Reveal></div></section>
+    <section className="mx-auto max-w-6xl px-6 pb-16 md:pb-24"><Reveal><h2 className="text-4xl md:text-5xl">Selected <span className="hl hl-blue">work</span></h2><p className="mt-4 max-w-xl text-mute">Real projects, with live links where they can be opened.</p></Reveal>
+      {!work.length && <p className="mt-8 text-mute">Projects will appear here once published.</p>}
+      <div className="mt-12 grid gap-8 md:grid-cols-3">{work.map((p, i) => <Reveal key={p.id} d={i * .1}><WorkCard p={p} /></Reveal>)}</div>
+      {all.length > 3 && <Link href="/projects" className="btn-o mt-12">View all work</Link>}</section>
+    <section className="mx-auto max-w-6xl px-6 pb-16 md:pb-24"><Reveal><h2 className="text-4xl md:text-5xl">How a project runs</h2></Reveal>
+      <ol className="mt-12 grid gap-6 md:grid-cols-4">{steps.map(([t, d], i) => <Reveal key={t} d={i * .1}><li className="h-full border-2 border-ink p-6 transition-colors hover:border-blue"><span className="grid h-12 w-12 place-items-center bg-blue text-xl font-extrabold text-white">{i + 1}</span><h3 className="mt-5 text-xl">{t}</h3><p className="mt-2 text-sm text-mute">{d}</p></li></Reveal>)}</ol></section>
+    <section className="bg-blue py-16 text-white md:py-24"><div className="mx-auto max-w-6xl px-6"><Reveal><h2 className="max-w-3xl text-4xl md:text-6xl">Tell me what you need to <span className="hl bg-ink">build or understand.</span></h2>
+      <div className="mt-10 flex flex-wrap gap-3"><Link href="/contact" className="inline-block bg-white px-6 py-3 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5">Start a conversation</Link><a href={LINKEDIN} {...{ target: '_blank', rel: 'noopener noreferrer' }} className="inline-block border-2 border-white px-6 py-3 text-sm font-semibold transition-colors hover:bg-white hover:text-blue">Connect on LinkedIn</a></div></Reveal></div></section>
   </main>);
 }
