@@ -1,19 +1,15 @@
 import Link from 'next/link';
-import WorkCard from '@/components/WorkCard';
+import WorkIndex from '@/components/WorkIndex';
 import { getPublished } from '@/lib/supabase/public';
-import { KINDS } from '@/lib/content';
+import { toItem } from '@/lib/content';
 export const revalidate = 60;
 export const metadata = { title: 'Work' };
-export default async function P({ searchParams }: { searchParams: Promise<{ k?: string; f?: string }> }) {
-  const { k, f } = await searchParams; const all = await getPublished();
-  const inKind = all.filter((p: any) => !k || p.kind === k);
-  const tags = [...new Set(inKind.map((p: any) => p.industry).filter(Boolean))] as string[];
-  const list = inKind.filter((p: any) => !f || p.industry === f);
-  const q = (kk?: string, ff?: string) => { const s = new URLSearchParams(); if (kk) s.set('k', kk); if (ff) s.set('f', ff); const t = s.toString(); return t ? `/projects?${t}` : '/projects'; };
-  const chip = (on: boolean) => `border px-3 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-ink bg-ink text-white' : 'border-rule hover:border-ink'}`;
-  return (<main className="mx-auto max-w-6xl px-6 py-12 md:py-16"><h1 className="text-4xl md:text-6xl">Work</h1><p className="mt-4 max-w-xl text-lg text-mute">Systems, data projects and AI. Where a project is live, you can open it.</p>
-    <div className="mt-8 flex flex-wrap gap-2"><Link href={q()} className={chip(!k)}>All</Link>{Object.entries(KINDS).map(([key, l]) => <Link key={key} href={q(key)} className={chip(k === key)}>{l}</Link>)}</div>
-    {tags.length > 1 && <div className="mt-3 flex flex-wrap gap-2 text-sm">{tags.map(t => <Link key={t} href={q(k, f === t ? undefined : t)} className={`px-3 py-1 ${f === t ? 'bg-blue text-white' : 'bg-blue/10 text-blue'}`}>{t}</Link>)}</div>}
-    <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">{list.map((p: any) => <WorkCard key={p.id} p={p} />)}</div>
-    {!list.length && <p className="mt-10 text-mute">No projects here yet.</p>}</main>);
+export default async function P({ searchParams }: { searchParams: Promise<{ c?: string }> }) {
+  const { c } = await searchParams; const all = await getPublished();
+  const cats = [...new Set(all.map((p: any) => p.category).filter(Boolean))] as string[];
+  const list = all.filter((p: any) => !c || p.category === c);
+  return (<main className="wrap"><div className="sh"><span className="mono">Work</span><span className="mono">{list.length} {list.length === 1 ? 'project' : 'projects'}</span></div>
+    <h1 className="l" style={{ margin: '36px 0 12px', maxWidth: '14ch' }}>Systems you can open.</h1><p className="lead" style={{ marginTop: 0 }}>Where a project is live, there is a link to try it.</p>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, margin: '28px 0 32px' }}><Link href="/projects" className={`chip ${!c ? 'on' : ''}`}>All</Link>{cats.map(k => <Link key={k} href={`/projects?c=${encodeURIComponent(k)}`} className={`chip ${c === k ? 'on' : ''}`}>{k}</Link>)}</div>
+    {list.length ? <WorkIndex items={list.map(toItem)} /> : <p className="lead">No projects here yet.</p>}</main>);
 }

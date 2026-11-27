@@ -13,3 +13,8 @@ export const getClients = unstable_cache(async () => {
   const { data } = await pub().from('clients').select('*').eq('visible', true).order('sort_order').order('created_at');
   return data ?? [];
 }, ['pub-clients'], { revalidate: 60, tags: ['clients'] });
+import { DEFAULTS } from '@/lib/content';
+export const getSettings = unstable_cache(async () => {
+  const { data } = await pub().from('site_settings').select('value').eq('key', 'site').maybeSingle();
+  return { ...DEFAULTS, ...((data?.value as object) ?? {}) } as typeof DEFAULTS;
+}, ['pub-settings'], { revalidate: 60, tags: ['settings'] });

@@ -39,11 +39,7 @@ export default function SystemMap() {
   const [active, setActive] = useState('pos'); const [manual, setManual] = useState(false);
   useEffect(() => { if (manual) return; const ids = NODES.map(n => n.id); const t = setInterval(() => setActive(a => ids[(ids.indexOf(a) + 1) % ids.length]), 2600); return () => clearInterval(t); }, [manual]);
   const pick = (id: string) => { setManual(true); setActive(id); }; const n = NODES.find(x => x.id === active)!;
-  return (<div className="relative">
-    <span aria-hidden className="absolute -top-3 left-1/2 z-10 h-6 w-28 -translate-x-1/2 rotate-2 bg-blue/30" />
-    <div className="graph border border-rule p-4 shadow-[0_1px_2px_rgba(0,0,0,.08),0_6px_14px_-8px_rgba(0,0,0,.18)] sm:p-6 md:shadow-[0_1px_2px_rgba(0,0,0,.08),0_14px_28px_-10px_rgba(0,0,0,.2),0_44px_90px_-24px_rgba(0,0,0,.3)]">
-      <div className="mb-3 flex items-baseline justify-between border-b-2 border-ink pb-3 text-sm font-bold"><span>System map</span><span className="text-xs font-medium text-mute">Select a part</span></div>
-      <Svg v={false} active={active} setActive={pick} /><Svg v active={active} setActive={pick} />
-      <p aria-live="polite" className="mt-4 min-h-[3.25rem] text-sm"><b>{n.label}.</b> {n.cap}</p>
-    </div></div>);
+  return (<div className="fig"><div className="cap"><span className="mono">Fig. 01 · System map</span><span className="mono">Select a part</span></div>
+    <div className="bd"><Svg v={false} active={active} setActive={pick} /><Svg v active={active} setActive={pick} />
+      <p aria-live="polite" style={{ marginTop: 14, minHeight: '3.2rem', fontSize: '.92rem' }}><b>{n.label}.</b> {n.cap}</p></div></div>);
 }

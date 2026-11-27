@@ -2,9 +2,8 @@ import Link from 'next/link';
 import { services } from '@/lib/content';
 export const metadata = { title: 'Services' };
 export default function S() {
-  return (<main className="mx-auto max-w-6xl px-6 py-16"><h1 className="font-serif text-5xl">Services</h1>
-    <p className="mt-4 max-w-xl text-mute">Five ways we help owners understand what is happening inside the business.</p>
-    <ul className="mt-12 border-t border-ink">{services.map(([t,d,v])=><li key={t} className="grid gap-4 border-b border-rule py-8 md:grid-cols-12">
-      <h2 className="font-serif text-2xl md:col-span-4">{t}</h2><p className="md:col-span-5">{d}</p><p className="text-sm text-mute md:col-span-3"><span className="font-medium text-ink">What you get: </span>{v}</p></li>)}</ul>
-    <Link href="/contact" className="btn mt-10">Discuss your business</Link></main>);
+  return (<main className="wrap"><div className="sh"><span className="mono">Services</span><span className="mono">{services.length} areas</span></div>
+    <h1 className="l" style={{ margin: '36px 0 12px', maxWidth: '16ch' }}>What I build, analyse and automate.</h1><p className="lead" style={{ marginTop: 0 }}>Connected areas, delivered end to end by one person.</p>
+    <div className="idx" style={{ marginTop: 32 }}>{services.map(([t, d, v], i) => <div key={t} className="srow"><span className="n mono">S-0{i + 1}</span><h2>{t}</h2><p>{d}</p><p className="mono-v">{v}</p></div>)}</div>
+    <div className="acts" style={{ marginBottom: 24 }}><Link href="/contact" className="bt">Start a conversation</Link></div></main>);
 }
