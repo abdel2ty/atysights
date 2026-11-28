@@ -7,8 +7,8 @@ export async function sb() {
     cookies: { getAll: () => c.getAll(), setAll: (l: { name: string; value: string; options?: any }[]) => { try { l.forEach(({ name, value, options }) => c.set(name, value, options)); } catch {} } },
   });
 }
-export async function requireAdmin() {
-  const s = await sb();
+export async function requireAdmin(client?: Awaited<ReturnType<typeof sb>>) {
+  const s = client ?? await sb();
   const [{ data: { user } }, rpc] = await Promise.all([s.auth.getUser(), s.rpc('is_admin')]);
   if (!user) redirect('/admin/login');
   let ok = rpc.data === true;
