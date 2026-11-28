@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from '@/app/admin/actions';
 import { LOGO } from '@/lib/site';
-const nav = [['/admin', 'Overview'], ['/admin/projects', 'Projects'], ['/admin/clients', 'Clients'], ['/admin/inquiries', 'Messages'], ['/admin/site', 'Site'], ['/admin/account', 'Account']];
+const nav = [['/admin', 'Overview'], ['/admin/projects', 'Projects'], ['/admin/categories', 'Categories'], ['/admin/clients', 'Clients'], ['/admin/inquiries', 'Messages'], ['/admin/account', 'Account']];
 export default function AdminFrame({ children }: { children: React.ReactNode }) {
   const p = usePathname(); if (p === '/admin/login') return <>{children}</>;
   const on = (h: string) => (h === '/admin' ? p === '/admin' : p.startsWith(h));

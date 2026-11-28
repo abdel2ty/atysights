@@ -1,10 +1,10 @@
-import { requireAdmin, sb } from '@/lib/supabase/server';
+import { requireAdmin } from '@/lib/supabase/server';
 import ImageField from '@/components/ImageField';
 import { addClient, toggleClient, removeClient } from '../actions';
 export const dynamic = 'force-dynamic';
 export default async function C({ searchParams }: { searchParams: Promise<{ err?: string }> }) {
-  const { err } = await searchParams; const s = await sb();
-  const [, { data }] = await Promise.all([requireAdmin(s), s.from('clients').select('*').order('sort_order').order('created_at')]);
+  const { err } = await searchParams; const s = await requireAdmin();
+  const { data } = await s.from('clients').select('*').order('sort_order').order('created_at');
   return (<div className="mx-auto max-w-5xl"><h1 className="text-3xl md:text-4xl">Clients</h1><p className="mt-1 text-sm text-mute">Logos appear in the moving strip on your homepage. Paste a Cloudinary link or upload.</p>
     <form action={addClient} className="mt-8 grid gap-4 bg-white p-5 border border-rule md:grid-cols-2">
       {err && <p className="border border-red-700 p-3 text-sm text-red-700 md:col-span-2">{err}</p>}

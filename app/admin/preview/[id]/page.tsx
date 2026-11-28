@@ -6,6 +6,7 @@ export const metadata = { robots: { index: false } };
 export default async function Pv({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params; const s = await sb();
   const [, { data: p }] = await Promise.all([requireAdmin(s), s.from('projects').select('*').eq('id', id).maybeSingle()]); if (!p) notFound();
+  const { data: cat } = p.category_id ? await s.from('categories').select('id,name,logo_url').eq('id', p.category_id).maybeSingle() : { data: null };
   return (<><div className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-2 bg-blue px-6 py-3 text-sm font-semibold text-white"><span>Preview · {p.status === 'published' ? 'Published' : 'Draft, not visible to the public'}</span>
-    <span className="flex gap-4"><Link href={`/admin/edit/${p.id}`} className="underline">Back to editor</Link><Link href="/admin/projects" className="underline">Projects</Link></span></div><ProjectView p={p} /></>);
+    <span className="flex gap-4"><Link href={`/admin/edit/${p.id}`} className="underline">Back to editor</Link><Link href="/admin/projects" className="underline">Projects</Link></span></div><ProjectView p={{ ...p, cat }} /></>);
 }
